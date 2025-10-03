@@ -12,23 +12,26 @@ export default function ImageDisplay({ image, overlayAdded, brightness }) {
     const ctx = canvas.getContext("2d");
 
     const img = new Image();
+    const overlay = new Image();
+
+    overlay.onload = () => {
+      // Set canvas to overlay dimensions
+      canvas.width = overlay.width;
+      canvas.height = overlay.height;
+
+      // Draw the uploaded image stretched to overlay size
+      ctx.drawImage(img, 0, 0, overlay.width, overlay.height);
+
+      // Apply brightness filter and draw overlay
+      ctx.globalAlpha = brightness / 100;
+      ctx.drawImage(overlay, 0, 0, overlay.width, overlay.height);
+      ctx.globalAlpha = 1;
+    };
+
     img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      // Draw the uploaded image
-      ctx.drawImage(img, 0, 0);
-
-      // Load and draw overlay
-      const overlay = new Image();
-      overlay.onload = () => {
-        // Apply brightness filter
-        ctx.globalAlpha = brightness / 100;
-        ctx.drawImage(overlay, 0, 0, canvas.width, canvas.height);
-        ctx.globalAlpha = 1;
-      };
       overlay.src = "/images/overlay.png";
     };
+
     img.src = image;
   }, [image, overlayAdded, brightness]);
 
