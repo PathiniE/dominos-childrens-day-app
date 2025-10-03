@@ -19,13 +19,13 @@ export default function ImageDisplay({ image, overlayAdded, brightness }) {
       canvas.width = overlay.width;
       canvas.height = overlay.height;
 
-      // Draw the uploaded image stretched to overlay size
+      // Apply brightness filter to uploaded image
+      ctx.filter = `brightness(${brightness}%)`;
       ctx.drawImage(img, 0, 0, overlay.width, overlay.height);
+      ctx.filter = "none";
 
-      // Apply brightness filter and draw overlay
-      ctx.globalAlpha = brightness / 100;
+      // Draw overlay at full opacity
       ctx.drawImage(overlay, 0, 0, overlay.width, overlay.height);
-      ctx.globalAlpha = 1;
     };
 
     img.onload = () => {
