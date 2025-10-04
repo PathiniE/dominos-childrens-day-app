@@ -8,6 +8,7 @@ import BrightnessSlider from "./BrightnessSlider";
 
 export default function ChildrensDayApp() {
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [originalFileName, setOriginalFileName] = useState("");
   const [overlayAdded, setOverlayAdded] = useState(false);
   const [brightness, setBrightness] = useState(80);
 
@@ -22,7 +23,7 @@ export default function ChildrensDayApp() {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "childrens-day-photo.png";
+        link.download = originalFileName;
         link.click();
         URL.revokeObjectURL(url);
       });
@@ -35,7 +36,7 @@ export default function ChildrensDayApp() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-yellow-600 mb-4">
-             World Children's Day 2025 !
+            World Children's Day 2025 !
           </h1>
           <p className="text-lg md:text-xl text-purple-700 font-semibold">
             Create magical memories with our fun photo frames!
@@ -45,7 +46,10 @@ export default function ChildrensDayApp() {
         {/* Upload Button */}
         <div className="mb-8">
           <ImageUploader
-            onImageUpload={setUploadedImage}
+            onImageUpload={(imageData, fileName) => {
+              setUploadedImage(imageData);
+              setOriginalFileName(fileName);
+            }}
             hasImage={!!uploadedImage}
           />
         </div>

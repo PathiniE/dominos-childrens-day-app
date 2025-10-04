@@ -11,7 +11,7 @@ export default function ImageUploader({ onImageUpload, hasImage }) {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        onImageUpload(event.target.result);
+        onImageUpload(event.target.result, file.name);
       };
       reader.readAsDataURL(file);
     }
